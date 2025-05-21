@@ -53,3 +53,49 @@ iv) Perform face detection with label in real-time video from webcam.
 - Step 4: Display the video frame with rectangles around detected faces  
 - Step 5: Exit loop and close windows when ESC key (key code 27) is pressed  
 - Step 6: Release video capture and destroy all OpenCV windows  
+## Program
+```
+import cv2
+
+# Load Haar cascade
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+# Read the image
+image = cv2.imread('deeraj.jpg')
+
+# Check if image was loaded
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Convert to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Detect faces
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+
+    # Draw rectangles
+    for (x, y, w, h) in faces:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+
+    # Get screen resolution
+    screen_res = 1920, 1080  # You can change this based on your screen
+    scale_width = screen_res[0] / image.shape[1]
+    scale_height = screen_res[1] / image.shape[0]
+    scale = min(scale_width, scale_height)
+
+    window_width = int(image.shape[1] * scale)
+    window_height = int(image.shape[0] * scale)
+
+    # Resize image
+    resized_image = cv2.resize(image, (window_width, window_height))
+
+    # Show image
+    cv2.imshow('Detected Faces', resized_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+```
+## Output
+![image](https://github.com/user-attachments/assets/c1730e05-d6c5-4116-afcc-1c556fce7b04)
+
+## Result
+Thus the given objective of face detection is done sucessfully.
